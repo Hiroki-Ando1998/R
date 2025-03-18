@@ -11,7 +11,7 @@ df <- data.frame(
   group = rep(c("A", "B"), each = 10)
 )
 
-# ggplot2 の通常のプロット
+# X軸の変化とともに: transition_reveal
 p <- ggplot(df, aes(x = time, y = value, color = group)) +
   geom_line(size = 1.2) +
   geom_point(size = 3) +
@@ -21,3 +21,24 @@ p <- ggplot(df, aes(x = time, y = value, color = group)) +
 
 # アニメーションを作成
 animate(p, fps = 10, duration = 5, width = 600, height = 400)
+
+
+
+
+
+
+# 凡例(year)の変化とともに: transition_time
+p <- ggplot(gapminder, aes(x = year, y = lifeExp, size = pop, color = continent)) +
+  geom_point(alpha = 0.7) +
+  scale_x_continuous(breaks = seq(1950, 2010, 10)) +
+  labs(title = "Year: {frame_time}", x = "Year", y = "Life Expectancy") +
+  theme_minimal() +
+  transition_time(year)  # x 軸の year に沿ってアニメーション
+
+# アニメーションを作成
+animate(p, fps = 10, duration = 5, width = 600, height = 400)
+
+
+
+
+
