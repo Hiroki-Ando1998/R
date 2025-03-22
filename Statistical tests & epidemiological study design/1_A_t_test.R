@@ -1,14 +1,15 @@
-#Correlation coefficient
-cor.test(data_1$hospital, data_1$sapporo, method = "pearson")
-cor.test(data_1$hospital, data_1$sapporo, method = "spearman") 
-
-
 #t test 
 t.test(data, data, var.equal=TRUE, paired = FALSE)
 
 #Wilcoxson
 library(exactRankTests)
 wilcoxson(x = data, y = data, paired = T)
+
+#Effect size (https://www.statology.org/cohens-d-in-r/)
+library(effsize)
+cliff.delta(data, data)
+cohens.d(data, data)
+herges_g()
 
 #χ2 test
 chisq.test(matrix)
@@ -35,11 +36,7 @@ print(anova_result)
 
 kruskal.test(adj ~ A, data = data)
 
-#Effect size (https://www.statology.org/cohens-d-in-r/)
-library(effsize)
-cliff.delta(data, data)
-cohens.d(data, data)
-herges_g()
+
 
 #effecti size for categorical data
 condition1 <- c(30, 20, 50)
