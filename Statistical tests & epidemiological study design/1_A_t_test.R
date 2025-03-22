@@ -16,13 +16,7 @@ herges_g()
 #likelihood
 lr.test(A, B)
 
-#McNemar’s test
-before <- c(89, 5)
-after <- c(16, 90)
-data_table <- matrix(c(before, after), nrow = 2, byrow = TRUE,
-                     dimnames = list(Season = c("effective", "ineffective"),
-                                     Test = c("effective", "ineffective")))
-mcnemar.test(data_table)
+
 
 #ANOVA, Krustical-wallis test
 anova_result <- summary(aov(Bilsecpt ~ Hormone,data = data_3))
