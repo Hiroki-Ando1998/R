@@ -37,7 +37,18 @@ ggplot(qq_data, aes(x = Theoretical, y = Observed)) + geom_point() +
 library(car)
 ncvTest(res_lm) “res_lm is model name
 
+#Breusch-Pagan test
+library(lmtest)
+bptest(model)
 
+
+#不均一分散に頑健な標準誤差
+library(sandwich)
+sqrt(vcovHC(model, type = “HC”)) #modelは回帰分析の名前
+
+#パラメータの分散・共分散行列の出力
+vcov(model)
+                                 
 
 
                                    
