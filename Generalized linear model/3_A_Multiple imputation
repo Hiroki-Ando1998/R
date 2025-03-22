@@ -1,0 +1,24 @@
+library(mice)
+library(miceadds)　#library(Amelia)を使用するのもよい
+
+# 例となるデータの作成 (# 一部の値を欠損させる)
+set.seed(123)
+mydata <- data.frame(
+  y = rbinom(100, 1, 0.5),            # 応答変数（0か1の二項変数）
+  x1 = rnorm(100),                    # 説明変数1
+  x2 = rnorm(100),                    # 説明変数2
+  x3 = rnorm(100)                     # 説明変数3
+)
+mydata[sample(1:100, 20), "x1"] <- NA
+mydata[sample(1:100, 20), "x2"] <- NA
+
+
+# 欠損値を多重代入で補完（mice）
+imp <- mice(mydata, m = 5, method = "pmm", seed = 500)
+
+# 補完されたデータセットでロジスティック回帰モデルをフィッティング
+logit_model <- with.mids(imp, glm(y ~ x1 + x2 + x3, family = binomial()))
+pooled_results <- pool(logit_model)
+summary(pooled_results)
+
+#詳しくは、"欠測データ処理 Rによる単一代入法と多重代入法, P97
