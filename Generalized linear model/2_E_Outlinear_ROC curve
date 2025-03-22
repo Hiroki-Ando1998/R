@@ -1,0 +1,87 @@
+#Confirm using a likelihood ratio test
+lo_final <- glm(chd ~ age + chol + sex + as.factor(lvh) + as.factor(bmicat) + sbp + gl_int, data = framex4, family = binomial(link = "logit"))
+
+summary(lo_final)
+ or_glm(framex4, lo_final, incr =list(age = 1, chol = 1, sex = 1, sbp = 1, gl_int = 1))
+ 
+lo_checkr <- glm(chd ~ age + chol + sex + as.factor(lvh) + sbp + gl_int, data = framex4[!is.na(framex4$bmicat), ], family = binomial(link = "logit"))
+summary(lo_checkr)
+
+#likelihood test
+lr.test(lo_checkr, lo_final)
+
+# linearity of log-odds
+logistloess <- function(x, y, s=0.4){
+logit <- function(pr){
+log(pr/(1-pr))}
+locspan <- s
+loessfit <- predict(loess(y~x, span = locspan))
+pi <- pmax(pmin(loessfit, 0.9999), 0.0001)
+logitfitted <- logit(pi)
+plot(x, logitfitted, ylab = "logit", type = 'p')}
+
+logistloess(data$as.factor(race), data$capsule) #race, dpros, psa, gleason, age
+
+
+#Outlier
+#Confirm with figure
+lo2 <-  glm(capsule ~ as.factor(race) + as.factor(dpros) + psa + gleason, data = data, family = binomial(link = "logit"))
+
+hw6_hat <- cbind(names(lo2$fitted.values), hatvalues(lo2))
+hw6_hat <- data.frame(hw6_hat)
+colnames(hw6_hat)[c(1, 2)] <- c("id", "h")
+list_id <- hw6_hat[hw6_hat$h>0.06,]$id
+leverage_df <- cbind(data[data$id %in% c(list_id), -7], hw6_hat[hw6_hat$h>0.06, -3])
+kable(leverage_df[order(leverage_df$h),])
+
+#X
+hw6_dev <- cbind(names(lo2$fitted.values), residuals.glm(lo2, type="deviance"))
+hw6_dev <- data.frame(hw6_dev)
+colnames(hw6_dev)[c(1,2)] <- c("id", "dev")
+list_d <- hw6_dev[hw6_dev$dev>2.75,]$id
+data[data$id %in% c(list_d),]
+
+# Outliers in Y (predicted probabilities) can be detected using residuals
+hw6_dfbeta <- cbind(names(lo2$fitted.values), cooks.distance(lo2))
+hw6_dfbeta <- data.frame(hw6_dfbeta)
+colnames(hw6_dfbeta)[c(1, 2)] <- c("id", "dfbeta")
+hw6_dfbeta$dfbeta <- as.numeric(hw6_dfbeta$dfbeta)
+list_id <- hw6_dfbeta[hw6_dfbeta$dfbeta>0.03,]$id
+data[data$id %in% list_id,]
+
+
+boxplot(residuals)
+data_1 <- data.frame(residual = residuals)
+data_2 <- data %>% drop_na()
+data_3 <- cbind(data_1, data_2)
+diagid <- data_3[order(-abs(residuals)), ] 
+diagid[residuals > 2.75, ]
+
+nrow(data_1)
+
+#Hosmer-Lemeshow goodness of fit test
+hoslem.test(data[!is.na(data$race),]$capsule, fitted(lo2), g = 10)
+
+library(Iroc)
+#ROC curve
+prob <- predict(lo2, type=c("response"))
+pred <- prediction(prob, data[!is.na(data$race),]$capsule)
+perf <- performance(pred, measure = "tpr", x.measure = "fpr")
+plot(perf, xlab = "specificity", ylab = "sensitivity", mean = "ROC")
+abline(0, 1)
+auc <- performance(pred, "auc")
+
+
+or_glm(data, lo2, incr=list(OCuse=1))
+
+summary(lo2)
+exp(-0.6604)
+
+
+Linear regression: Cook’s distance
+Logistic regression: Pregibon’s Delta-Beta influence statistic
+boxplot(diag$dBhat)
+
+diagid <- diagid[order(-diagid$dBhat), ] #sort by Pregibon's delta-beta
+diagid[diagid$dBhat > 0.2, ]
+#0.2 is an arbitrary threshold.
