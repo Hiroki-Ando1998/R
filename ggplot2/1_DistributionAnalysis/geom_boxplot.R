@@ -1,5 +1,6 @@
 
-plot <- ggplot(data_all_sample, aes(x = as.factor(COUNTY), y = adjust_cidm, fill = as.factor(sample))) + geom_boxplot() +
+plot <- ggplot(data_all_sample, aes(x = as.factor(COUNTY), y = adjust_cidm, fill = as.factor(sample))) + 
+geom_boxplot() +
 labs(x = "County", y = "Concentration (ug/g or ug/L)") + 
 scale_fill_manual(values = c("lightblue", "orange", "red")) +
   theme_minimal() +
@@ -17,3 +18,7 @@ scale_fill_manual(values = c("lightblue", "orange", "red")) +
   ) + 
 guides(fill = guide_legend(title = NULL))
 print(plot)
+
+
+
+
