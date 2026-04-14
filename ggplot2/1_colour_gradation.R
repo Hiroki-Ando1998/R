@@ -1,3 +1,22 @@
+
+#--------------------------------------------------------------------------------------Gradation
+library(RcolorBrewer)
+display.brewer.all
+scale_fill_brewer(palette = “Spectral”)
+
+scale_fill_gradient(low = “black”, high = “white)
+
+ggplot(data, aes(x = data$A, y = data$B, fill = data$C)) + 
+scale_fill_gradient(low = “black”, high = “white”, limits = c(0, 6000), breaks = seq(70, 170, by = 20), guide =guide_legend()
+#離散的な凡例。連続値は、breaks以降を削除
+
+#n個のgradation
+scale_fill_gradientn(fill = c(“darked”, “orange”, “yellow”, “white”
+
+
+#--------------------------------------------------------------------------------------colour palet
+
+
 library(RColorBrewer)
 
 # "PuBu"パレットを表示する
