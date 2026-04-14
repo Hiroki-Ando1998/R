@@ -1,5 +1,5 @@
-
-This repository serves as a personal notebook in which I recorded my learning process as a beginner in R. It is by no means easy to understand for many readers, but it may still be useful as a reference. It includes the following contents.
+# Overview
+This repository serves as a personal notebook in which I recorded my learning process as a beginner in R. It includes the following contents.
 1. [Data organization](https://github.com/Hiroki-Ando1998/R/tree/main/Data_organization): Methods for cleaning, seeing basic statistics and transforming raw data into analyzable formats in R.
 2. [Data graphic](https://github.com/Hiroki-Ando1998/R/tree/main/ggplot2): Techniques for data visualization using ggplot2, including customization of plots and graphical elements.
 3. [Generalized linear model](https://github.com/Hiroki-Ando1998/R/tree/main/Generalized%20linear%20model): Implementation and interpretation of GLMs such as linear, logistic, and Poisson regression models.
