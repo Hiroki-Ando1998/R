@@ -1,0 +1,32 @@
+data {
+  int<lower=0> N;      // サンプル数
+  vector[N] x;         // 説明変数
+  int<lower=0> y[N];   // 目的変数（カウント）
+}
+
+parameters {
+  real alpha;          // 切片
+  real beta;           // 回帰係数
+}
+
+model {
+  vector[N] lambda;
+
+  // Priors
+  alpha ~ normal(0, 10);
+  beta ~ normal(0, 10);
+
+  // linear predictor (log link)
+  lambda = exp(alpha + beta * x);
+
+  // Likelihood
+  y ~ poisson(lambda);
+}
+
+generated quantities {
+  int y_rep[N];
+
+  for (n in 1:N) {
+    y_rep[n] = poisson_rng(exp(alpha + beta * x[n]));
+  }
+}
