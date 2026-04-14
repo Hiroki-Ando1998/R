@@ -19,7 +19,7 @@ rstan_options(auto_write = TRUE)
 options(mc.cores = parallel::detectCores())
 
 mcmc <- stan(
-  file = "linear_regression.stan", 
+  file = "1_LinearModel.stan", 
   data = data_list_ww,
   seed = 1,
   chain = 4,
